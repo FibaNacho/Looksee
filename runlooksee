@@ -1,0 +1,37 @@
+import subprocess
+
+def run_command(command):
+    try:
+        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+        return result.decode('utf-8')
+    except subprocess.CalledProcessError as e:
+        return e.output.decode('utf-8')
+
+def main():
+    # Check for available updates
+    print("Checking for available updates...")
+    update_check = run_command("sudo apt update")
+    print(update_check)
+
+    # Check for installed security updates
+    print("Checking for installed security updates...")
+    security_updates_check = run_command("sudo unattended-upgrade --dry-run --debug")
+    print(security_updates_check)
+
+    # Check for open ports
+    print("Checking for open ports...")
+    open_ports_check = run_command("sudo netstat -tuln")
+    print(open_ports_check)
+
+    # Check for running services
+    print("Checking for running services...")
+    running_services_check = run_command("sudo service --status-all")
+    print(running_services_check)
+
+    # Check for outdated software
+    print("Checking for outdated software...")
+    outdated_software_check = run_command("sudo apt list --upgradable")
+    print(outdated_software_check)
+
+if __name__ == "__main__":
+    main()
